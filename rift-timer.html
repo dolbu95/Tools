@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1446 50%, #2d1b4e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .back-link {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            padding: 10px 20px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            text-decoration: none;
+            color: #667eea;
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .back-link:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateX(-3px);
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #a0a0a0;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+        }
+
+        .current-time {
+            text-align: center;
+            font-size: 1.2em;
+            color: #b0b0b0;
+            margin-bottom: 30px;
+        }
+
+        .main-timer {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .timer-label {
+            font-size: 1.1em;
+            color: #a0a0a0;
+            margin-bottom: 15px;
+        }
+
+        .countdown {
+            font-size: 4em;
+            font-weight: bold;
+            text-align: center;
+            color: #fff;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .countdown.warning {
+            color: #ff6b6b;
+            animation: blink 1s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .next-event {
+            text-align: center;
+            font-size: 1.3em;
+            margin-top: 15px;
+            color: #667eea;
+        }
+
+        .event-status {
+            text-align: center;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .event-status.active {
+            background: rgba(76, 175, 80, 0.3);
+            color: #4caf50;
+            border: 1px solid #4caf50;
+        }
+
+        .event-status.upcoming {
+            background: rgba(255, 193, 7, 0.3);
+            color: #ffc107;
+            border: 1px solid #ffc107;
+        }
+
+        .schedule {
+            margin-top: 30px;
+        }
+
+        .schedule h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+        }
+
+        .schedule-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .schedule-item:hover {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .schedule-item.active {
+            background: rgba(76, 175, 80, 0.3);
+            border-color: #4caf50;
+        }
+
+        .schedule-item.next {
+            background: rgba(255, 193, 7, 0.3);
+            border-color: #ffc107;
+        }
+
+        .schedule-time {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .schedule-label {
+            font-size: 0.9em;
+            color: #a0a0a0;
+        }
+
+        .settings {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+        }
+
+        .settings h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .volume-control input[type="range"] {
+            flex: 1;
+            height: 6px;
+            border-radius: 3px;
+            background: #555;
+            outline: none;
+        }
+
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 1.8em;
+            }
+
+            .countdown {
+                font-size: 2.5em;
+            }
+
+            .schedule-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <a href="index.html" class="back-link">← 메인</a>
+
+    <div class="container">
+        <h1>⚔️ 시공의 균열 타이머</h1>
+        <p class="subtitle">AION 2 - Rift of Time Alert System</p>
+
+        <div class="current-time" id="currentTime">현재 시간: --:--:--</div>
+
+        <div class="main-timer">
+            <div class="timer-label">다음 시공의 균열까지</div>
+            <div class="countdown" id="countdown">--:--:--</div>
+            <div class="next-event" id="nextEvent">다음 이벤트: --:--</div>
+            <div class="event-status upcoming" id="eventStatus">대기 중</div>
+        </div>
+
+        <div class="schedule">
+            <h2>📅 오늘의 시공의 균열</h2>
+            <div class="schedule-grid" id="scheduleGrid"></div>
+            <p style="margin-top: 5px;">브라우저를 열어두시면 자동으로 알람이 울립니다 🎯</p>
+        </div>
+
+        <div class="settings">
+            <h2>⚙️ 설정</h2>
+
+            <div class="setting-item">
+                <span>🔔 알림 방식</span>
+                <select id="notificationType"
+                    style="padding: 8px; border-radius: 5px; background: #333; color: white; border: 1px solid #555;">
+                    <option value="both">🔔 팝업 + 소리</option>
+                    <option value="popup">💻 윈도우 팝업만</option>
+                    <option value="sound">🔊 소리만</option>
+                    <option value="none">🔕 알림 끄기</option>
+                </select>
+            </div>
+
+            <div class="setting-item">
+                <span>🔊 알람 볼륨</span>
+                <div class="volume-control">
+                    <input type="range" id="volume" min="0" max="100" value="70">
+                    <span id="volumeValue">70%</span>
+                </div>
+            </div>
+
+            <div class="setting-item" style="justify-content: center; margin-top: 20px;">
+                <button onclick="testAlarm()"
+                    style="padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                    🔔 5초 후 알람 테스트
+                </button>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2024 부트띠's Tools</p>
+        </div>
+    </div>
+
+    <script>
+        const RIFT_TIMES = [2, 6, 10, 14, 18, 22];
+        const RIFT_DURATION = 30;
+        const ALARM_TIMES = [10, 5, 0];
+        let triggeredAlarms = new Set();
+
+        function loadSettings() {
+            const notificationType = localStorage.getItem('notificationType') || 'both';
+            const volume = localStorage.getItem('volume');
+
+            document.getElementById('notificationType').value = notificationType;
+            if (volume !== null) {
+                document.getElementById('volume').value = volume;
+                document.getElementById('volumeValue').textContent = volume + '%';
+            }
+        }
+
+        function saveSettings() {
+            localStorage.setItem('notificationType', document.getElementById('notificationType').value);
+            localStorage.setItem('volume', document.getElementById('volume').value);
+        }
+
+        document.getElementById('notificationType').addEventListener('change', saveSettings);
+        document.getElementById('volume').addEventListener('input', function () {
+            document.getElementById('volumeValue').textContent = this.value + '%';
+            saveSettings();
+        });
+
+        function getNextRiftTime() {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+
+            for (let hour of RIFT_TIMES) {
+                if (currentHour < hour || (currentHour === hour && currentMinute < RIFT_DURATION)) {
+                    const nextTime = new Date(now);
+                    nextTime.setHours(hour, 0, 0, 0);
+                    return nextTime;
+                }
+            }
+
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(RIFT_TIMES[0], 0, 0, 0);
+            return tomorrow;
+        }
+
+        function isEventActive() {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+
+            for (let hour of RIFT_TIMES) {
+                if (currentHour === hour && currentMinute < RIFT_DURATION) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        function formatTime(date) {
+            return date.getHours().toString().padStart(2, '0') + ':' + date.getMinutes().toString().padStart(2, '0');
+        }
+
+        function formatCountdown(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+            return hours.toString().padStart(2, '0') + ':' + minutes.toString().padStart(2, '0') + ':' + seconds.toString().padStart(2, '0');
+        }
+
+        function playAlertSound() {
+            const type = document.getElementById('notificationType').value;
+            if (type === 'none' || type === 'popup') return;
+
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const volume = document.getElementById('volume').value / 100;
+
+            for (let i = 0; i < 3; i++) {
+                setTimeout(() => {
+                    const oscillator = audioContext.createOscillator();
+                    const gainNode = audioContext.createGain();
+
+                    oscillator.connect(gainNode);
+                    gainNode.connect(audioContext.destination);
+
+                    oscillator.frequency.value = 800;
+                    oscillator.type = 'sine';
+
+                    gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
+                    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.3);
+
+                    oscillator.start(audioContext.currentTime);
+                    oscillator.stop(audioContext.currentTime + 0.3);
+                    const item = document.createElement('div');
+                    item.className = 'schedule-item';
+
+                    if (currentHour === hour && currentMinute < RIFT_DURATION) {
+                        item.classList.add('active');
+                    } else {
+                        const nextRift = getNextRiftTime();
+                        if (nextRift.getHours() === hour && nextRift.getDate() === now.getDate()) {
+                            item.classList.add('next');
+                        }
+                    }
+
+                    item.innerHTML = `
+                    <div class="schedule-time">${hour.toString().padStart(2, '0')}:00</div>
+                    <div class="schedule-label">시공의 균열</div>
+                `;
+
+                    grid.appendChild(item);
+                });
+            }
+
+            function update() {
+                const now = new Date();
+
+                document.getElementById('currentTime').textContent =
+                    `현재 시간: ${formatTime(now)}:${now.getSeconds().toString().padStart(2, '0')}`;
+
+                const isActive = isEventActive();
+                const statusElement = document.getElementById('eventStatus');
+                const countdownElement = document.getElementById('countdown');
+
+                if (isActive) {
+                    const currentHour = now.getHours();
+                    const endTime = new Date(now);
+                    endTime.setHours(currentHour, RIFT_DURATION, 0, 0);
+                    const remainingMs = endTime - now;
+
+                    statusElement.textContent = '🟢 현재 진행 중! (입장 가능)';
+                    statusElement.className = 'event-status active';
+                    countdownElement.textContent = formatCountdown(remainingMs);
+                    countdownElement.classList.add('warning');
+                    document.getElementById('nextEvent').textContent = `종료 시간: ${formatTime(endTime)}`;
+                } else {
+                    const nextRift = getNextRiftTime();
+                    const remainingMs = nextRift - now;
+                    const remainingMinutes = Math.floor(remainingMs / 1000 / 60);
+
+                    statusElement.textContent = '⏳ 다음 이벤트 대기 중';
+                    statusElement.className = 'event-status upcoming';
+                    countdownElement.textContent = formatCountdown(remainingMs);
+
+                    if (remainingMinutes < 10) {
+                        countdownElement.classList.add('warning');
+                    } else {
+                        countdownElement.classList.remove('warning');
+                    }
+
+                    document.getElementById('nextEvent').textContent = `다음 이벤트: ${formatTime(nextRift)}`;
+
+                    ALARM_TIMES.forEach(minutesBefore => {
+                        const alarmKey = `${nextRift.getTime()}-${minutesBefore}`;
+                        if (remainingMinutes <= minutesBefore && remainingMinutes >= 0 && !triggeredAlarms.has(alarmKey)) {
+                            triggerAlarm(minutesBefore);
+                            triggeredAlarms.add(alarmKey);
+                        }
+                    });
+                }
+
+                if (now.getSeconds() === 0) {
+                    createScheduleGrid();
+                }
+            }
+
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+
+            loadSettings();
+            createScheduleGrid();
+            update();
+            setInterval(update, 1000);
+
+            console.log('🎮 아이온2 시공의 균열 타이머가 시작되었습니다!');
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1446 50%, #2d1b4e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            text-decoration: none;
+            color: #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateX(-3px);
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            color: #a0a0a0;
+        }
+
+        .add-timer-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr auto;
+            gap: 15px;
+            margin-bottom: 15px;
+            align-items: end;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            font-size: 0.9em;
+            color: #a0a0a0;
+        }
+
+        input,
+        select {
+            padding: 12px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #e0e0e0;
+            font-size: 1em;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.1);
+        }
+
+        button {
+            padding: 12px 24px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .timers-grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .timer-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+
+        .timer-card.alert {
+            border-color: #ff6b6b;
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+            animation: pulse 1s infinite;
+        }
+
+        @keyframes pulse {
+
+            0%,
+            100% {
+                box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+            }
+
+            50% {
+                box-shadow: 0 0 30px rgba(255, 107, 107, 0.6);
+            }
+        }
+
+        .timer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .timer-title {
+            font-size: 1.5em;
+            color: #fff;
+        }
+
+        .delete-btn {
+            background: rgba(255, 107, 107, 0.2);
+            padding: 8px 16px;
+            font-size: 0.9em;
+        }
+
+        .delete-btn:hover {
+            background: rgba(255, 107, 107, 0.4);
+        }
+
+        .timer-info {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 15px;
+        }
+
+        .info-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .info-label {
+            font-size: 0.9em;
+            color: #a0a0a0;
+            margin-bottom: 5px;
+        }
+
+        .info-value {
+            font-size: 1.3em;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .countdown {
+            font-size: 2em;
+            color: #4caf50;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .countdown.warning {
+            color: #ffc107;
+        }
+
+        .countdown.danger {
+            color: #ff6b6b;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #a0a0a0;
+        }
+
+        .empty-state-icon {
+            font-size: 4em;
+            margin-bottom: 20px;
+        }
+
+        .settings-section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .volume-control input[type="range"] {
+            flex: 1;
+            height: 6px;
+            border-radius: 3px;
+            background: #555;
+            outline: none;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .timer-info {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <a href="index.html" class="back-link">← 메인으로 돌아가기</a>
+
+        <header>
+            <h1>⏱️ 커스텀 타이머</h1>
+            <p class="subtitle">나만의 타이머를 추가하고 관리하세요</p>
+        </header>
+
+        <div class="add-timer-section">
+            <h3 style="margin-bottom: 20px; color: #667eea;">새 타이머 추가</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="timerName">타이머 이름</label>
+                    <input type="text" id="timerName" placeholder="예: 보스 리젠, 버프 시간">
+                </div>
+                <div class="form-group">
+                    <label for="timerHour">시간 (시)</label>
+                    <input type="number" id="timerHour" min="0" max="23" value="0">
+                </div>
+                <div class="form-group">
+                    <label for="timerMinute">시간 (분)</label>
+                    <input type="number" id="timerMinute" min="0" max="59" value="30">
+                </div>
+                <button onclick="addTimer()">➕ 추가</button>
+            </div>
+            <div style="margin-top: 10px; font-size: 0.85em; color: #a0a0a0;">
+                💡 팁: 알람은 설정한 시간이 되면 자동으로 울립니다
+            </div>
+        </div>
+
+        <div class="settings-section">
+            <h3 style="margin-bottom: 20px; color: #667eea;">⚙️ 알림 설정</h3>
+
+            <div class="setting-item">
+                <span style="color: #a0a0a0;">🔔 알림 방식</span>
+                <select id="notificationType"
+                    style="padding: 8px; border-radius: 5px; background: #333; color: white; border: 1px solid #555;">
+                    <option value="both">🔔 팝업 + 소리</option>
+                    <option value="popup">💻 윈도우 팝업만</option>
+                    <h3>아직 추가된 타이머가 없습니다</h3>
+                    <p style="margin-top: 10px; font-size: 0.9em;">
+                        위에서 타이머를 추가해보세요!
+                    </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let timers = JSON.parse(localStorage.getItem('custom_timers') || '[]');
+        let updateInterval = null;
+
+        function addTimer() {
+            const name = document.getElementById('timerName').value.trim();
+            const hours = parseInt(document.getElementById('timerHour').value) || 0;
+            const minutes = parseInt(document.getElementById('timerMinute').value) || 0;
+
+            if (!name) {
+                alert('타이머 이름을 입력해주세요!');
+                return;
+            }
+
+            if (hours === 0 && minutes === 0) {
+                alert('시간을 0보다 크게 설정해주세요!');
+                return;
+            }
+
+            const timer = {
+                id: Date.now(),
+                name: name,
+                durationMs: (hours * 60 * 60 + minutes * 60) * 1000,
+                endTime: Date.now() + (hours * 60 * 60 + minutes * 60) * 1000,
+                alerted: false
+            };
+
+            timers.push(timer);
+            saveTimers();
+
+            // 입력 필드 초기화
+            document.getElementById('timerName').value = '';
+            document.getElementById('timerHour').value = '0';
+            document.getElementById('timerMinute').value = '30';
+
+            function formatTime(ms) {
+                const totalSeconds = Math.floor(ms / 1000);
+                const hours = Math.floor(totalSeconds / 3600);
+                const minutes = Math.floor((totalSeconds % 3600) / 60);
+                const seconds = totalSeconds % 60;
+
+                if (hours > 0) {
+                    return `${hours}시간 ${minutes}분 ${seconds}초`;
+                } else if (minutes > 0) {
+                    return `${minutes}분 ${seconds}초`;
+                } else {
+                    return `${seconds}초`;
+                }
+            }
+
+            function renderTimers() {
+                const grid = document.getElementById('timersGrid');
+
+                if (timers.length === 0) {
+                    grid.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">⏰</div>
+                        <h3>아직 추가된 타이머가 없습니다</h3>
+                        <p style="margin-top: 10px; font-size: 0.9em;">
+                            위에서 타이머를 추가해보세요!
+                        </p>
+                    </div>
+                `;
+                    return;
+                }
+
+                grid.innerHTML = timers.map(timer => {
+                    const now = Date.now();
+                    const remaining = Math.max(0, timer.endTime - now);
+                    const progress = ((timer.durationMs - remaining) / timer.durationMs) * 100;
+
+                    let countdownClass = '';
+                    if (remaining <= 0) {
+                        countdownClass = 'danger';
+                    } else if (remaining <= 60000) {
+                        countdownClass = 'danger';
+                    } else if (remaining <= 300000) {
+                        countdownClass = 'warning';
+                    }
+
+                    const alertClass = (remaining <= 0 && !timer.alerted) ? 'alert' : '';
+
+                    return `
+                    <div class="timer-card ${alertClass}">
+                        <div class="timer-header">
+                            <div class="timer-title">${timer.name}</div>
+                            <button class="delete-btn" onclick="deleteTimer(${timer.id})">🗑️ 삭제</button>
+                        </div>
+                        
+                        <div class="countdown ${countdownClass}">
+                            ${remaining > 0 ? formatTime(remaining) : '⏰ 시간 종료!'}
+                        </div>
+
+                        <div class="timer-info">
+                            <div class="info-item">
+                                <div class="info-label">설정 시간</div>
+                                <div class="info-value">${formatTime(timer.durationMs)}</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="info-label">진행률</div>
+                                <div class="info-value">${Math.min(100, Math.floor(progress))}%</div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                }).join('');
+            }
+
+            function updateTimers() {
+                const now = Date.now();
+
+                timers.forEach(timer => {
+                    const remaining = timer.endTime - now;
+
+                    // 알람 실행
+                    if (remaining <= 0 && !timer.alerted) {
+                        timer.alerted = true;
+                        triggerAlarm(timer.name);
+                    }
+                });
+
+                // 종료된 타이머 자동 삭제 (5분 후)
+                timers = timers.filter(timer => {
+                    const timeSinceEnd = now - timer.endTime;
+                    return timeSinceEnd < 300000; // 5분
+                });
+                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                const volume = document.getElementById('volume').value / 100;
+
+                const oscillator = audioContext.createOscillator();
+                const gainNode = audioContext.createGain();
+
+                oscillator.connect(gainNode);
+                gainNode.connect(audioContext.destination);
+
+                oscillator.frequency.value = 800;
+                oscillator.type = 'sine';
+
+                gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+
+                oscillator.start();
+                setTimeout(() => oscillator.stop(), 500);
+            }
+
+            function showNotification(timerName) {
+                const type = document.getElementById('notificationType').value;
+                if (type === 'none' || type === 'sound') return;
+
+                if ('Notification' in window && Notification.permission === 'granted') {
+                    new Notification('⏰ 타이머 알람!', {
+                        body: `"${timerName}" 타이머가 종료되었습니다!`,
+                        icon: '⏰'
+                    });
+                }
+            }
+
+            // 설정 로드 및 저장
+            function loadSettings() {
+                const notificationType = localStorage.getItem('custom_notificationType') || 'both';
+                const volume = localStorage.getItem('custom_volume');
+
+                document.getElementById('notificationType').value = notificationType;
+                if (volume !== null) {
+                    document.getElementById('volume').value = volume;
+                    document.getElementById('volumeValue').textContent = volume + '%';
+                }
+            }
+
+            function saveSettings() {
+                localStorage.setItem('custom_notificationType', document.getElementById('notificationType').value);
+                localStorage.setItem('custom_volume', document.getElementById('volume').value);
+            }
+
+            document.getElementById('notificationType').addEventListener('change', saveSettings);
+            document.getElementById('volume').addEventListener('input', function () {
+                document.getElementById('volumeValue').textContent = this.value + '%';
+                saveSettings();
+            });
+
+            // 알림 권한 요청
+            if ('Notification' in window && Notification.permission === 'default') {
+                Notification.requestPermission();
+            }
+
+            // 초기화
+            loadSettings();
+            renderTimers();
+            updateInterval = setInterval(updateTimers, 1000);
+
+            // 페이지 언로드 시 정리
+            window.addEventListener('beforeunload', () => {
+                if (updateInterval) clearInterval(updateInterval);
+            });
+
+            console.log('⏱️ 커스텀 타이머 페이지가 로드되었습니다');
+    </script>
+</body>
+
+</html>

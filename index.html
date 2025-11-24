@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tools</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1446 50%, #2d1b4e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 30px 0;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            color: #a0a0a0;
+            margin-bottom: 10px;
+        }
+
+        .version {
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .next-events {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .next-events h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+
+        .event-summary {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .event-item {
+            background: rgba(255, 255, 255, 0.03);
+            padding: 20px;
+            border-radius: 10px;
+            border-left: 4px solid #667eea;
+            transition: all 0.3s ease;
+        }
+
+        .event-item:hover {
+            background: rgba(102, 126, 234, 0.1);
+            transform: translateX(5px);
+        }
+
+        .event-title {
+            font-size: 1.1em;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        .event-time {
+            font-size: 1.8em;
+            color: #fff;
+            margin-bottom: 5px;
+        }
+
+        .event-countdown {
+            font-size: 0.9em;
+            color: #a0a0a0;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .tool-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            transition: all 0.4s;
+            cursor: pointer;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(102, 126, 234, 0.5);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.3);
+        }
+
+        .tool-card.available {
+            border-color: rgba(76, 175, 80, 0.3);
+        }
+
+        .tool-card.coming-soon {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .tool-card.coming-soon:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .tool-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+            display: block;
+        }
+
+        .tool-title {
+            font-size: 1.5em;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .tool-description {
+            font-size: 0.85em;
+            color: #a0a0a0;
+            line-height: 1.4;
+            margin-bottom: 15px;
+        }
+
+        .tool-status {
+            display: inline-block;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        .status-available {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4caf50;
+            border: 1px solid #4caf50;
+        }
+
+        .status-coming-soon {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffc107;
+            border: 1px solid #ffc107;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            color: #666;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            margin-top: 50px;
+        }
+
+        footer p {
+            margin: 5px 0;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .tools-grid,
+            .event-summary {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>⚔️ 부트띠's Tools</h1>
+            <p class="subtitle">아이온2 편의 도구 모음</p>
+            <p class="version">v1.0.0 | Made with ❤️ for Guild</p>
+        </header>
+
+        <section class="next-events">
+            <h2>📅 다가오는 이벤트</h2>
+            <div class="event-summary">
+                <div class="event-item">
+                    <div class="event-title">⏰ 다음 시공의 균열</div>
+                    <div class="event-time" id="nextRiftTime">--:--</div>
+                    <div class="event-countdown" id="riftCountdown">계산 중...</div>
+                </div>
+                <div class="event-item">
+                    <div class="event-title">👹 다음 보스 리젠</div>
+                    <div class="event-time">준비 중</div>
+                    <div class="event-countdown">정보 수집 중</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="tools-grid">
+            <a href="rift-timer.html" class="tool-card available">
+                <span class="tool-icon">🌀</span>
+                <h3 class="tool-title">시공 균열 알림</h3>
+                <p class="tool-description">매일 6회 시공의 균열 타이머와 알람</p>
+                <span class="tool-status status-available">✅ 사용 가능</span>
+            </a>
+
+            <a href="custom-timer.html" class="tool-card available">
+                <span class="tool-icon">⏱️</span>
+                <h3 class="tool-title">커스텀 타이머</h3>
+                <p class="tool-description">나만의 타이머를 자유롭게 추가</p>
+                <span class="tool-status status-available">✅ 사용 가능</span>
+            </a>
+
+            <div class="tool-card coming-soon">
+                <span class="tool-icon">👹</span>
+                <h3 class="tool-title">보스 알림</h3>
+                <p class="tool-description">필드 보스 리젠 시간 추적 및 알람</p>
+                <span class="tool-status status-coming-soon">🚧 개발 예정</span>
+            </div>
+        </section>
+
+        <footer>
+            <p><strong>부트띠's Tools</strong> - 아이온2 길드 전용 도구</p>
+            <p>문의 및 건의사항은 디스코드로 연락해주세요 💬</p>
+            <p style="margin-top: 15px; font-size: 0.85em;">© 2024 부트띠's Tools | 모든 권리 보유</p>
+        </footer>
+    </div>
+
+    <script>
+        const RIFT_TIMES = [2, 6, 10, 14, 18, 22];
+        const RIFT_DURATION = 30;
+
+        function getNextRiftTime() {
+            const now = new Date();
+            const currentHour = now.getHours();
+            const currentMinute = now.getMinutes();
+
+            for (let hour of RIFT_TIMES) {
+                if (currentHour < hour || (currentHour === hour && currentMinute < RIFT_DURATION)) {
+                    const nextTime = new Date(now);
+                    nextTime.setHours(hour, 0, 0, 0);
+                    return nextTime;
+                }
+            }
+
+            const tomorrow = new Date(now);
+            tomorrow.setDate(tomorrow.getDate() + 1);
+            tomorrow.setHours(RIFT_TIMES[0], 0, 0, 0);
+            return tomorrow;
+        }
+
+        function formatTime(date) {
+            return date.getHours().toString().padStart(2, '0') + ':' +
+                date.getMinutes().toString().padStart(2, '0');
+        }
+
+        function formatCountdown(ms) {
+            const totalMinutes = Math.floor(ms / 1000 / 60);
+            const hours = Math.floor(totalMinutes / 60);
+            const minutes = totalMinutes % 60;
+
+            if (hours > 0) {
+                return `${hours}시간 ${minutes}분 후`;
+            } else {
+                return `${minutes}분 후`;
+            }
+        }
+
+        function updateNextEvent() {
+            const nextRift = getNextRiftTime();
+            const now = new Date();
+            const remainingMs = nextRift - now;
+
+            document.getElementById('nextRiftTime').textContent = formatTime(nextRift);
+            document.getElementById('riftCountdown').textContent = formatCountdown(remainingMs);
+        }
+
+        updateNextEvent();
+        setInterval(updateNextEvent, 60000);
+
+        document.querySelectorAll('.tool-card.coming-soon').forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                alert('🚧 이 기능은 곧 추가될 예정입니다!\n\n개발이 완료되면 업데이트 알려드리겠습니다. 😊');
+            });
+        });
+
+        console.log('⚔️ 부트띠\'s Tools에 오신 것을 환영합니다!');
+        console.log('📌 현재 사용 가능: 시공 균열 알림, 커스텀 타이머');
+        console.log('🚧 개발 예정: 보스 알림');
+    </script>
+</body>
+
+</html>
