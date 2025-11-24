@@ -234,9 +234,286 @@
 
         .footer {
             margin-top: 30px;
+        }
+
+        .container {
+            max-width: 800px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #a0a0a0;
+            margin-bottom: 30px;
+            font-size: 0.9em;
+        }
+
+        .current-time {
+            text-align: center;
+            font-size: 1.2em;
+            color: #b0b0b0;
+            margin-bottom: 30px;
+        }
+
+        .main-timer {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%);
+            border-radius: 15px;
+            padding: 30px;
+            margin-bottom: 30px;
+            border: 2px solid rgba(102, 126, 234, 0.3);
+        }
+
+        .timer-label {
+            font-size: 1.1em;
+            color: #a0a0a0;
+            margin-bottom: 15px;
+        }
+
+        .countdown {
+            font-size: 4em;
+            font-weight: bold;
+            text-align: center;
+            color: #fff;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .countdown.warning {
+            color: #ff6b6b;
+            animation: blink 1s ease-in-out infinite;
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0.7;
+            }
+        }
+
+        .next-event {
+            text-align: center;
+            font-size: 1.3em;
+            margin-top: 15px;
+            color: #667eea;
+        }
+
+        .event-status {
+            text-align: center;
+            margin-top: 10px;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .event-status.active {
+            background: rgba(76, 175, 80, 0.3);
+            color: #4caf50;
+            border: 1px solid #4caf50;
+        }
+
+        .event-status.upcoming {
+            background: rgba(255, 193, 7, 0.3);
+            color: #ffc107;
+            border: 1px solid #ffc107;
+        }
+
+        .schedule {
+            margin-top: 30px;
+        }
+
+        .schedule h2 {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #667eea;
+        }
+
+        .schedule-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+        }
+
+        .schedule-item {
+            background: rgba(255, 255, 255, 0.05);
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .schedule-item:hover {
+            background: rgba(102, 126, 234, 0.2);
+            border-color: rgba(102, 126, 234, 0.5);
+            transform: translateY(-3px);
+        }
+
+        .schedule-item.active {
+            background: rgba(76, 175, 80, 0.3);
+            border-color: #4caf50;
+        }
+
+        .schedule-item.next {
+            background: rgba(255, 193, 7, 0.3);
+            border-color: #ffc107;
+        }
+
+        .schedule-time {
+            font-size: 2em;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .schedule-label {
+            font-size: 0.9em;
+            color: #a0a0a0;
+        }
+
+        .settings {
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 10px;
+        }
+
+        .settings h2 {
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            color: #667eea;
+        }
+
+        .setting-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .volume-control input[type="range"] {
+            flex: 1;
+            height: 6px;
+            border-radius: 3px;
+            background: #555;
+            outline: none;
+        }
+
+        .footer {
+            margin-top: 30px;
             text-align: center;
             color: #666;
             font-size: 0.9em;
+        }
+
+        .alarm-controls {
+            margin-bottom: 20px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .input-group {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .input-group input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
+        }
+
+        .input-group button {
+            padding: 10px 20px;
+            background: #667eea;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .quick-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .quick-btn {
+            padding: 6px 12px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 6px;
+            color: #ccc;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.2s;
+        }
+
+        .quick-btn:hover {
+            background: rgba(102, 126, 234, 0.3);
+            border-color: #667eea;
+            color: white;
+        }
+
+        .alarm-list {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .alarm-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .delete-alarm {
+            color: #ff6b6b;
+            cursor: pointer;
+            padding: 4px 8px;
+            font-weight: bold;
+        }
+
+        .delete-alarm:hover {
+            background: rgba(255, 107, 107, 0.1);
+            border-radius: 4px;
         }
 
         @media (max-width: 600px) {
@@ -280,6 +557,26 @@
         <div class="settings">
             <h2>⚙️ 설정</h2>
 
+            <div class="alarm-controls">
+                <h3 style="font-size: 1.1em; color: #a0a0a0; margin-bottom: 10px;">⏰ 알림 시간 설정</h3>
+
+                <div class="input-group">
+                    <input type="number" id="customAlarmInput" placeholder="분 (예: 15)" min="1" max="120">
+                    <button onclick="addCustomAlarm()">추가</button>
+                </div>
+
+                <div class="quick-buttons">
+                    <button class="quick-btn" onclick="addAlarm(3)">+ 3분 전</button>
+                    <button class="quick-btn" onclick="addAlarm(5)">+ 5분 전</button>
+                    <button class="quick-btn" onclick="addAlarm(10)">+ 10분 전</button>
+                    <button class="quick-btn" onclick="addAlarm(30)">+ 30분 전</button>
+                </div>
+
+                <div id="alarmList" class="alarm-list">
+                    <!-- 알림 목록이 여기에 표시됩니다 -->
+                </div>
+            </div>
+
             <div class="setting-item">
                 <span>🔔 알림 방식</span>
                 <select id="notificationType"
@@ -315,23 +612,83 @@
     <script>
         const RIFT_TIMES = [10, 14, 18, 22];
         const RIFT_DURATION = 30;
-        const ALARM_TIMES = [10, 5, 0];
+        let alarmOffsets = []; // 사용자가 설정한 알림 시간 (분 단위)
         let triggeredAlarms = new Set();
 
         function loadSettings() {
             const notificationType = localStorage.getItem('notificationType') || 'both';
             const volume = localStorage.getItem('volume');
+            const savedAlarms = localStorage.getItem('alarmOffsets');
 
             document.getElementById('notificationType').value = notificationType;
             if (volume !== null) {
                 document.getElementById('volume').value = volume;
                 document.getElementById('volumeValue').textContent = volume + '%';
             }
+
+            if (savedAlarms) {
+                alarmOffsets = JSON.parse(savedAlarms);
+            } else {
+                alarmOffsets = [10]; // 기본값: 10분 전
+            }
+            renderAlarms();
         }
 
         function saveSettings() {
             localStorage.setItem('notificationType', document.getElementById('notificationType').value);
             localStorage.setItem('volume', document.getElementById('volume').value);
+        }
+
+        function saveAlarms() {
+            localStorage.setItem('alarmOffsets', JSON.stringify(alarmOffsets));
+            renderAlarms();
+        }
+
+        function addAlarm(minutes) {
+            minutes = parseInt(minutes);
+            if (isNaN(minutes) || minutes <= 0) return;
+
+            if (!alarmOffsets.includes(minutes)) {
+                alarmOffsets.push(minutes);
+                alarmOffsets.sort((a, b) => b - a); // 내림차순 정렬
+                saveAlarms();
+            }
+        }
+
+        function addCustomAlarm() {
+            const input = document.getElementById('customAlarmInput');
+            const minutes = parseInt(input.value);
+            if (minutes > 0) {
+                addAlarm(minutes);
+                input.value = '';
+            } else {
+                alert('올바른 시간을 입력해주세요.');
+            }
+        }
+
+        function removeAlarm(minutes) {
+            alarmOffsets = alarmOffsets.filter(m => m !== minutes);
+            saveAlarms();
+        }
+
+        function renderAlarms() {
+            const list = document.getElementById('alarmList');
+            list.innerHTML = '';
+
+            if (alarmOffsets.length === 0) {
+                list.innerHTML = '<div style="text-align: center; color: #666; padding: 10px;">설정된 알림이 없습니다.</div>';
+                return;
+            }
+
+            alarmOffsets.forEach(minutes => {
+                const item = document.createElement('div');
+                item.className = 'alarm-item';
+                item.innerHTML = `
+                    <span>⏰ ${minutes}분 전 알림</span>
+                    <span class="delete-alarm" onclick="removeAlarm(${minutes})">✕ 삭제</span>
+                `;
+                list.appendChild(item);
+            });
         }
 
         document.getElementById('notificationType').addEventListener('change', saveSettings);
@@ -546,10 +903,15 @@
 
                 document.getElementById('nextEvent').textContent = `다음 이벤트: ${formatTime(nextRift)}`;
 
-                ALARM_TIMES.forEach(minutesBefore => {
+                // 커스텀 알람 체크
+                alarmOffsets.forEach(minutesBefore => {
                     const alarmKey = `${nextRift.getTime()}-${minutesBefore}`;
+                    // 남은 시간이 설정한 시간과 같거나 작고(지나치지 않음), 아직 알람을 안 울렸으면
                     if (remainingMinutes <= minutesBefore && remainingMinutes >= 0 && !triggeredAlarms.has(alarmKey)) {
-                        triggerAlarm(minutesBefore);
+                        // 너무 오래 지난 알람은 무시 (예: 1분 이상 차이나면)
+                        if (minutesBefore - remainingMinutes < 1) {
+                            triggerAlarm(minutesBefore);
+                        }
                         triggeredAlarms.add(alarmKey);
                     }
                 });
