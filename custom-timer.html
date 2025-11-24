@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tools</title>
+    <title>Tools - 커스텀 타이머</title>
     <style>
         * {
             margin: 0;
@@ -20,15 +20,10 @@
             padding: 20px;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-
         .back-link {
             display: inline-block;
             margin-bottom: 20px;
-            padding: 8px 16px;
+            padding: 10px 20px;
             background: rgba(255, 255, 255, 0.05);
             border-radius: 8px;
             text-decoration: none;
@@ -39,6 +34,11 @@
         .back-link:hover {
             background: rgba(102, 126, 234, 0.2);
             transform: translateX(-3px);
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
         }
 
         header {
@@ -72,7 +72,6 @@
             display: grid;
             grid-template-columns: 2fr 1fr 1fr auto;
             gap: 15px;
-            margin-bottom: 15px;
             align-items: end;
         }
 
@@ -87,38 +86,35 @@
             color: #a0a0a0;
         }
 
-        input,
-        select {
-            padding: 12px;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        input {
+            padding: 10px;
             border-radius: 8px;
-            color: #e0e0e0;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.2);
+            color: white;
             font-size: 1em;
         }
 
-        input:focus,
-        select:focus {
+        input:focus {
             outline: none;
             border-color: #667eea;
-            background: rgba(102, 126, 234, 0.1);
         }
 
         button {
-            padding: 12px 24px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 10px 20px;
+            background: #667eea;
             color: white;
             border: none;
             border-radius: 8px;
             cursor: pointer;
             font-size: 1em;
-            font-weight: 600;
             transition: all 0.3s ease;
+            height: 42px;
         }
 
         button:hover {
+            background: #764ba2;
             transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
 
         .timers-grid {
@@ -128,28 +124,29 @@
 
         .timer-card {
             background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(10px);
             border-radius: 15px;
-            padding: 25px;
+            padding: 20px;
             border: 1px solid rgba(255, 255, 255, 0.1);
-            position: relative;
+            transition: all 0.3s ease;
         }
 
         .timer-card.alert {
             border-color: #ff6b6b;
-            box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
-            animation: pulse 1s infinite;
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.2);
+            animation: pulse 2s infinite;
         }
 
         @keyframes pulse {
-
-            0%,
-            100% {
-                box-shadow: 0 0 20px rgba(255, 107, 107, 0.3);
+            0% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.4);
             }
 
-            50% {
-                box-shadow: 0 0 30px rgba(255, 107, 107, 0.6);
+            70% {
+                box-shadow: 0 0 0 10px rgba(255, 107, 107, 0);
+            }
+
+            100% {
+                box-shadow: 0 0 0 0 rgba(255, 107, 107, 0);
             }
         }
 
@@ -312,11 +309,29 @@
                     style="padding: 8px; border-radius: 5px; background: #333; color: white; border: 1px solid #555;">
                     <option value="both">🔔 팝업 + 소리</option>
                     <option value="popup">💻 윈도우 팝업만</option>
-                    <h3>아직 추가된 타이머가 없습니다</h3>
-                    <p style="margin-top: 10px; font-size: 0.9em;">
-                        위에서 타이머를 추가해보세요!
-                    </p>
+                    <option value="sound">🔊 소리만</option>
+                    <option value="none">🔕 알림 끄기</option>
+                </select>
             </div>
+
+            <div class="setting-item">
+                <span style="color: #a0a0a0;">🔊 알람 볼륨</span>
+                <div class="volume-control">
+                    <input type="range" id="volume" min="0" max="100" value="70">
+                    <span id="volumeValue">70%</span>
+                </div>
+            </div>
+
+            <div class="setting-item" style="justify-content: center; margin-top: 20px;">
+                <button onclick="testAlarm()"
+                    style="padding: 10px 20px; background: #667eea; color: white; border: none; border-radius: 8px; cursor: pointer;">
+                    🔔 5초 후 알람 테스트
+                </button>
+            </div>
+        </div>
+
+        <div class="timers-grid" id="timersGrid">
+            <!-- 타이머 카드가 여기에 추가됨 -->
         </div>
     </div>
 
@@ -355,26 +370,41 @@
             document.getElementById('timerHour').value = '0';
             document.getElementById('timerMinute').value = '30';
 
-            function formatTime(ms) {
-                const totalSeconds = Math.floor(ms / 1000);
-                const hours = Math.floor(totalSeconds / 3600);
-                const minutes = Math.floor((totalSeconds % 3600) / 60);
-                const seconds = totalSeconds % 60;
+            renderTimers();
+        }
 
-                if (hours > 0) {
-                    return `${hours}시간 ${minutes}분 ${seconds}초`;
-                } else if (minutes > 0) {
-                    return `${minutes}분 ${seconds}초`;
-                } else {
-                    return `${seconds}초`;
-                }
+        function deleteTimer(id) {
+            if (confirm('이 타이머를 삭제하시겠습니까?')) {
+                timers = timers.filter(t => t.id !== id);
+                saveTimers();
+                renderTimers();
             }
+        }
 
-            function renderTimers() {
-                const grid = document.getElementById('timersGrid');
+        function saveTimers() {
+            localStorage.setItem('custom_timers', JSON.stringify(timers));
+        }
 
-                if (timers.length === 0) {
-                    grid.innerHTML = `
+        function formatTime(ms) {
+            const totalSeconds = Math.floor(ms / 1000);
+            const hours = Math.floor(totalSeconds / 3600);
+            const minutes = Math.floor((totalSeconds % 3600) / 60);
+            const seconds = totalSeconds % 60;
+
+            if (hours > 0) {
+                return `${hours}시간 ${minutes}분 ${seconds}초`;
+            } else if (minutes > 0) {
+                return `${minutes}분 ${seconds}초`;
+            } else {
+                return `${seconds}초`;
+            }
+        }
+
+        function renderTimers() {
+            const grid = document.getElementById('timersGrid');
+
+            if (timers.length === 0) {
+                grid.innerHTML = `
                     <div class="empty-state">
                         <div class="empty-state-icon">⏰</div>
                         <h3>아직 추가된 타이머가 없습니다</h3>
@@ -383,26 +413,26 @@
                         </p>
                     </div>
                 `;
-                    return;
+                return;
+            }
+
+            grid.innerHTML = timers.map(timer => {
+                const now = Date.now();
+                const remaining = Math.max(0, timer.endTime - now);
+                const progress = ((timer.durationMs - remaining) / timer.durationMs) * 100;
+
+                let countdownClass = '';
+                if (remaining <= 0) {
+                    countdownClass = 'danger';
+                } else if (remaining <= 60000) {
+                    countdownClass = 'danger';
+                } else if (remaining <= 300000) {
+                    countdownClass = 'warning';
                 }
 
-                grid.innerHTML = timers.map(timer => {
-                    const now = Date.now();
-                    const remaining = Math.max(0, timer.endTime - now);
-                    const progress = ((timer.durationMs - remaining) / timer.durationMs) * 100;
+                const alertClass = (remaining <= 0 && !timer.alerted) ? 'alert' : '';
 
-                    let countdownClass = '';
-                    if (remaining <= 0) {
-                        countdownClass = 'danger';
-                    } else if (remaining <= 60000) {
-                        countdownClass = 'danger';
-                    } else if (remaining <= 300000) {
-                        countdownClass = 'warning';
-                    }
-
-                    const alertClass = (remaining <= 0 && !timer.alerted) ? 'alert' : '';
-
-                    return `
+                return `
                     <div class="timer-card ${alertClass}">
                         <div class="timer-header">
                             <div class="timer-title">${timer.name}</div>
@@ -425,97 +455,151 @@
                         </div>
                     </div>
                 `;
-                }).join('');
-            }
+            }).join('');
+        }
 
-            function updateTimers() {
-                const now = Date.now();
+        function updateTimers() {
+            const now = Date.now();
 
-                timers.forEach(timer => {
-                    const remaining = timer.endTime - now;
+            timers.forEach(timer => {
+                const remaining = timer.endTime - now;
 
-                    // 알람 실행
-                    if (remaining <= 0 && !timer.alerted) {
-                        timer.alerted = true;
-                        triggerAlarm(timer.name);
-                    }
-                });
-
-                // 종료된 타이머 자동 삭제 (5분 후)
-                timers = timers.filter(timer => {
-                    const timeSinceEnd = now - timer.endTime;
-                    return timeSinceEnd < 300000; // 5분
-                });
-                const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                const volume = document.getElementById('volume').value / 100;
-
-                const oscillator = audioContext.createOscillator();
-                const gainNode = audioContext.createGain();
-
-                oscillator.connect(gainNode);
-                gainNode.connect(audioContext.destination);
-
-                oscillator.frequency.value = 800;
-                oscillator.type = 'sine';
-
-                gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
-
-                oscillator.start();
-                setTimeout(() => oscillator.stop(), 500);
-            }
-
-            function showNotification(timerName) {
-                const type = document.getElementById('notificationType').value;
-                if (type === 'none' || type === 'sound') return;
-
-                if ('Notification' in window && Notification.permission === 'granted') {
-                    new Notification('⏰ 타이머 알람!', {
-                        body: `"${timerName}" 타이머가 종료되었습니다!`,
-                        icon: '⏰'
-                    });
+                // 알람 실행
+                if (remaining <= 0 && !timer.alerted) {
+                    timer.alerted = true;
+                    triggerAlarm(timer.name);
                 }
-            }
-
-            // 설정 로드 및 저장
-            function loadSettings() {
-                const notificationType = localStorage.getItem('custom_notificationType') || 'both';
-                const volume = localStorage.getItem('custom_volume');
-
-                document.getElementById('notificationType').value = notificationType;
-                if (volume !== null) {
-                    document.getElementById('volume').value = volume;
-                    document.getElementById('volumeValue').textContent = volume + '%';
-                }
-            }
-
-            function saveSettings() {
-                localStorage.setItem('custom_notificationType', document.getElementById('notificationType').value);
-                localStorage.setItem('custom_volume', document.getElementById('volume').value);
-            }
-
-            document.getElementById('notificationType').addEventListener('change', saveSettings);
-            document.getElementById('volume').addEventListener('input', function () {
-                document.getElementById('volumeValue').textContent = this.value + '%';
-                saveSettings();
             });
 
-            // 알림 권한 요청
-            if ('Notification' in window && Notification.permission === 'default') {
-                Notification.requestPermission();
-            }
+            // 종료된 타이머 자동 삭제 (5분 후)
+            timers = timers.filter(timer => {
+                const timeSinceEnd = now - timer.endTime;
+                return timeSinceEnd < 300000; // 5분
+            });
 
-            // 초기화
-            loadSettings();
             renderTimers();
-            updateInterval = setInterval(updateTimers, 1000);
+        }
 
-            // 페이지 언로드 시 정리
-            window.addEventListener('beforeunload', () => {
-                if (updateInterval) clearInterval(updateInterval);
-            });
+        function playAlertSound() {
+            const type = document.getElementById('notificationType').value;
+            if (type === 'none' || type === 'popup') return;
 
-            console.log('⏱️ 커스텀 타이머 페이지가 로드되었습니다');
+            const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            const volume = document.getElementById('volume').value / 100;
+
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+
+            oscillator.frequency.value = 800;
+            oscillator.type = 'sine';
+
+            gainNode.gain.setValueAtTime(volume, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.5);
+
+            oscillator.start();
+            setTimeout(() => oscillator.stop(), 500);
+        }
+
+        function showNotification(timerName) {
+            const type = document.getElementById('notificationType').value;
+            if (type === 'none' || type === 'sound') return;
+
+            if ('Notification' in window && Notification.permission === 'granted') {
+                new Notification('⏰ 타이머 알람!', {
+                    body: `"${timerName}" 타이머가 종료되었습니다!`,
+                    icon: '⏰'
+                });
+            }
+        }
+
+        function triggerAlarm(timerName) {
+            playAlertSound();
+            showNotification(timerName);
+        }
+
+        function testAlarm() {
+            // 1. 브라우저 지원 여부 확인
+            if (!('Notification' in window)) {
+                alert('이 브라우저는 데스크탑 알림을 지원하지 않습니다.');
+                return;
+            }
+
+            // 2. 현재 상태 진단 알림 (디버깅용)
+            const protocol = window.location.protocol;
+            const permission = Notification.permission;
+
+            if (protocol === 'file:') {
+                alert(`[진단 정보]\n현재 실행 방식: 로컬 파일(file://)\n현재 권한 상태: ${permission}\n\n주의: 크롬/엣지 등 최신 브라우저는 보안 정책상\n인터넷 주소(http/https)가 아닌 '로컬 파일'에서 실행 시\n알림 권한 요청을 차단할 수 있습니다.`);
+            }
+
+            // 3. 권한 요청 및 알람 예약
+            if (permission === 'granted') {
+                scheduleTestAlarm();
+            } else if (permission === 'denied') {
+                alert('알림 권한이 [차단]되어 있습니다. 브라우저 설정에서 차단을 해제해주세요.');
+            } else {
+                // 권한이 default인 경우 요청 시도
+                Notification.requestPermission().then(newPermission => {
+                    if (newPermission === 'granted') {
+                        scheduleTestAlarm();
+                    } else {
+                        alert(`권한 요청이 거부되었거나 차단되었습니다.\n(결과: ${newPermission})\n\n로컬 파일 실행 시에는 윈도우 알림이 제한될 수 있습니다.\n이 경우 '소리 알림'만 사용 가능합니다.`);
+                    }
+                }).catch(err => {
+                    alert(`권한 요청 중 오류 발생: ${err}\n\n로컬 파일에서는 알림 권한 요청이 작동하지 않을 수 있습니다.`);
+                });
+            }
+        }
+
+        function scheduleTestAlarm() {
+            alert('5초 후에 윈도우 알림이 전송됩니다!\n브라우저를 최소화하고 기다려보세요.');
+            setTimeout(() => {
+                triggerAlarm('테스트 알람');
+            }, 5000);
+        }
+
+        // 설정 로드 및 저장
+        function loadSettings() {
+            const notificationType = localStorage.getItem('custom_notificationType') || 'both';
+            const volume = localStorage.getItem('custom_volume');
+
+            document.getElementById('notificationType').value = notificationType;
+            if (volume !== null) {
+                document.getElementById('volume').value = volume;
+                document.getElementById('volumeValue').textContent = volume + '%';
+            }
+        }
+
+        function saveSettings() {
+            localStorage.setItem('custom_notificationType', document.getElementById('notificationType').value);
+            localStorage.setItem('custom_volume', document.getElementById('volume').value);
+        }
+
+        document.getElementById('notificationType').addEventListener('change', saveSettings);
+        document.getElementById('volume').addEventListener('input', function () {
+            document.getElementById('volumeValue').textContent = this.value + '%';
+            saveSettings();
+        });
+
+        // 알림 권한 요청
+        if ('Notification' in window && Notification.permission === 'default') {
+            Notification.requestPermission();
+        }
+
+        // 초기화
+        loadSettings();
+        renderTimers();
+        updateInterval = setInterval(updateTimers, 1000);
+
+        // 페이지 언로드 시 정리
+        window.addEventListener('beforeunload', () => {
+            if (updateInterval) clearInterval(updateInterval);
+        });
+
+        console.log('⏱️ 커스텀 타이머 페이지가 로드되었습니다');
     </script>
 </body>
 
